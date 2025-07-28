@@ -17,7 +17,7 @@ def fetch_crime_data():
     limit = 50000
     offset = 0
     while True:
-        url = f"https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025&$limit={limit}&$offset={offset}"
+        url = f"https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025&$limit={limit}&$offset={offset}&$order=id"
         data = requests.get(url, headers=headers).json()
         if not data:
             break
