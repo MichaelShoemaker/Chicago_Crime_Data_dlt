@@ -8,7 +8,6 @@ dotenv.load_dotenv()
 CHICAGO_CRIME_API = "https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025"
 
 CHI_APP_TOKEN = os.getenv("CHI_APP_TOKEN")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./bq_cred.json"
 
 @dlt.resource(name="chicago_crime", write_disposition="merge", primary_key="id")
 def fetch_crime_data():
@@ -27,7 +26,7 @@ def fetch_crime_data():
 
 pipeline = dlt.pipeline(
     pipeline_name="chicago_crime_pipeline",
-    destination="bigquery",
+    destination="duckdb",
     dataset_name="chicago_crime_data",
     pipelines_dir="./myconfig"
 )

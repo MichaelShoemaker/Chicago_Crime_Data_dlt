@@ -1,0 +1,31 @@
+gcloud services enable cloudfunctions.googleapis.com run.googleapis.com artifactregistry.googleapis.com
+
+docker build -t us-central1-docker.pkg.dev/morning-weather-1/cloud-function-images/chicago-crime-loader .
+
+docker push us-central1-docker.pkg.dev/morning-weather-1/cloud-function-images/chicago-crime-loader
+
+
+gcloud artifacts repositories create $REPOSITORY \
+  --repository-format=docker \
+  --location=$REGION
+
+
+gcloud builds submit --tag $REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME
+
+
+gcloud functions deploy chicago-crime-loader-fn \
+  --gen2 \
+  --region=$REGION \
+  --runtime=custom \
+  --source=. \
+  --entry-point=main \
+  --trigger-http \
+  --allow-unauthenticated \
+  --docker-registry=artifact-registry \
+  --image=$REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE_NAME
+
+
+gcloud scheduler jobs create http chicago-crime-job \
+  --schedule="0 8 * * *" \
+  --uri=https://REGION-PROJECT_ID.cloudfunctions.net/chicago-crime-loader-fn \
+  --http-method=GET
