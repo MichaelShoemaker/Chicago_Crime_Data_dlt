@@ -14,14 +14,23 @@ def fetch_crime_data():
     headers = {
         "X-App-Token": f"{CHI_APP_TOKEN}"
     }
-    limit = 1000
+    limit = 50000
     offset = 0
     while True:
         url = f"https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025&$limit={limit}&$offset={offset}"
         data = requests.get(url, headers=headers).json()
         if not data:
             break
-        yield data
+        cleaned = []
+        for row in data:
+            try:
+                if 'id' in row and row['id']:
+                    row['id'] = int(row['id'])  # convert to int
+                    cleaned.append(row)
+            except Exception as e:
+                print(f"Skipping row due to error: {e}, row: {row}")
+        
+        yield cleaned
         offset += limit
 
 pipeline = dlt.pipeline(

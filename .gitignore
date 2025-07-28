@@ -13,3 +13,6 @@
 
 # Ignore contents of myconfig folder in root
 /myconfig/*
+
+
+**/*.csv
