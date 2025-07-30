@@ -21,23 +21,27 @@ def fetch_crime_data():
         data = requests.get(url, headers=headers).json()
         if not data:
             break
-        cleaned = []
-        for row in data:
-            try:
-                if 'id' in row and row['id']:
-                    row['id'] = int(row['id'])  # convert to int
-                    cleaned.append(row)
-            except Exception as e:
-                print(f"Skipping row due to error: {e}, row: {row}")
+        # cleaned = []
+        # for row in data:
+        #     try:
+        #         if 'id' in row and row['id']:
+        #             row['id'] = int(row['id']) 
+        #             cleaned.append(row)
+        #     except Exception as e:
+        #         print(f"Skipping row due to error: {e}, row: {row}")
         
-        yield cleaned
+        yield data
+        # break
         offset += limit
 
 pipeline = dlt.pipeline(
+    # import_schema_path="schemas/import",
+    # export_schema_path="schemas/export",
     pipeline_name="chicago_crime_pipeline",
     destination="duckdb",
     dataset_name="chicago_crime_data",
     pipelines_dir="./myconfig"
+    # ,dev_mode=True
 )
 
 load_info = pipeline.run(fetch_crime_data(), loader_file_format="jsonl")
