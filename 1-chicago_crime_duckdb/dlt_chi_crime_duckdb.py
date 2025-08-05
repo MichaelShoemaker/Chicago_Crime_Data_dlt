@@ -47,8 +47,8 @@ pipeline = dlt.pipeline(
     # export_schema_path="schemas/export",
     pipeline_name="chicago_crime_pipeline",
     destination="duckdb",
-    dataset_name="chicago_crime_data",
-    pipelines_dir="./myconfig"
+    dataset_name="chicago_crime_data"
+    # pipelines_dir="./myconfig"
     # ,dev_mode=True
 )
 # load_info = pipeline.run(chicago_crime_resource, loader_file_format="jsonl")

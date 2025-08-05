@@ -1,0 +1,1 @@
+curl "https://data.cityofchicago.org/resource/ijzp-q8t2.json?\$where=year=2025&\$limit=5000000&\$offset=0" -o text.json
