@@ -34,6 +34,14 @@ def fetch_crime_data():
         # break
         offset += limit
 
+
+# chicago_crime_resource = dlt.resource(
+#     fetch_crime_data,
+#     name="chicago_crime",
+#     write_disposition="merge",
+#     primary_key="id"
+# )
+
 pipeline = dlt.pipeline(
     # import_schema_path="schemas/import",
     # export_schema_path="schemas/export",
@@ -43,6 +51,6 @@ pipeline = dlt.pipeline(
     pipelines_dir="./myconfig"
     # ,dev_mode=True
 )
-
+# load_info = pipeline.run(chicago_crime_resource, loader_file_format="jsonl")
 load_info = pipeline.run(fetch_crime_data(), loader_file_format="jsonl")
 print(f"Loaded: {load_info}")
