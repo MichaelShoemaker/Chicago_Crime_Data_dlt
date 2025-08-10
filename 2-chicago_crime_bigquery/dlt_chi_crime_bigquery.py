@@ -6,8 +6,6 @@ from dlt.sources.helpers import requests
 
 dotenv.load_dotenv()
 
-CHICAGO_CRIME_API = "https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025"
-
 CHI_APP_TOKEN = os.getenv("CHI_APP_TOKEN")
 
 with open("bq_creds.json") as f:
@@ -26,7 +24,7 @@ def fetch_crime_data():
     limit = 1000
     offset = 0
     while True:
-        url = f"https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025&$limit={limit}&$offset={offset}"
+        url = f"https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025&$limit={limit}&$offset={offset}&$order=id"
         data = requests.get(url, headers=headers).json()
         if not data:
             break

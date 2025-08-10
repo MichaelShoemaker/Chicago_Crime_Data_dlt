@@ -5,7 +5,6 @@ from dlt.sources.helpers import requests
 
 dotenv.load_dotenv()
 
-CHICAGO_CRIME_API = "https://data.cityofchicago.org/resource/ijzp-q8t2.json?$where=year=2025"
 
 CHI_APP_TOKEN = os.getenv("CHI_APP_TOKEN")
 
